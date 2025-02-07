@@ -1,7 +1,7 @@
 import {css, defineElement} from 'element-vir';
-import {AgendaSectionByType} from '../../../../data/agenda/agenda-section';
-import {TextAlignment} from '../../../../data/agenda/agenda-sections/text.section';
-import {formatTextForPresentation} from '../../../../util/presentation-text';
+import {AgendaSectionByType} from '../../../../data/agenda/agenda-section.js';
+import {TextAlignment} from '../../../../data/agenda/agenda-sections/text.section.js';
+import {formatTextForPresentation} from '../../../../util/presentation-text.js';
 
 export const VirTextPresent = defineElement<{
     section: AgendaSectionByType<'text'>;
@@ -28,7 +28,7 @@ export const VirTextPresent = defineElement<{
             text-align-last: left;
         }
     `,
-    renderCallback({inputs}) {
+    render({inputs}) {
         return formatTextForPresentation(inputs.section.text);
     },
 });

@@ -1,6 +1,6 @@
 import {css, defineElement, defineElementEvent, html, listen} from 'element-vir';
 import {ViraInput} from 'vira';
-import {VirLabel} from './vir-label.element';
+import {VirLabel} from './vir-label.element.js';
 
 export const VirInput = defineElement<{
     value: string;
@@ -25,7 +25,7 @@ export const VirInput = defineElement<{
             width: 100%;
         }
     `,
-    renderCallback({inputs, dispatch, events}) {
+    render({inputs, dispatch, events}) {
         return html`
             <${VirLabel.assign({
                 label: inputs.label,

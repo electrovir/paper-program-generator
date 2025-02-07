@@ -7,7 +7,7 @@ import {
     ViraInput,
     noNativeFormStyles,
 } from 'vira';
-import {AgendaTemplate} from '../../../../data/agenda/agenda-config';
+import {AgendaTemplate} from '../../../../data/agenda/agenda-config.js';
 
 export const VirAgendaTemplateEntry = defineElement<{
     agendaTemplate: Readonly<AgendaTemplate>;
@@ -69,7 +69,7 @@ export const VirAgendaTemplateEntry = defineElement<{
             font-size: 1.5em;
         }
     `,
-    renderCallback({state, inputs, updateState, dispatch, events}) {
+    render({state, inputs, updateState, dispatch, events}) {
         const iconTemplates = [
             {
                 icon: Options24Icon,

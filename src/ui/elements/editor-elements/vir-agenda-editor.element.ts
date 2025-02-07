@@ -1,10 +1,10 @@
 import {css, defineElement, html, listen} from 'element-vir';
-import {AgendaConfig, AgendaTemplate} from '../../../data/agenda/agenda-config';
-import {VirAgendaTemplates} from './agenda-templates/vir-agenda-templates.element';
-import {VirAgendaSettings} from './vir-agenda-settings.element';
-import {EditorTab, VirEditorTabs} from './vir-editor-tabs.elements';
-import {VirPagesEditor} from './vir-pages-editor.element';
-import {VirRawJsonEditor} from './vir-raw-json-editor.element';
+import {AgendaConfig, AgendaTemplate} from '../../../data/agenda/agenda-config.js';
+import {VirAgendaTemplates} from './agenda-templates/vir-agenda-templates.element.js';
+import {VirAgendaSettings} from './vir-agenda-settings.element.js';
+import {EditorTab, VirEditorTabs} from './vir-editor-tabs.elements.js';
+import {VirPagesEditor} from './vir-pages-editor.element.js';
+import {VirRawJsonEditor} from './vir-raw-json-editor.element.js';
 
 export const VirAgendaEditor = defineElement<{
     agendaConfig: Readonly<AgendaConfig>;
@@ -39,7 +39,7 @@ export const VirAgendaEditor = defineElement<{
     stateInitStatic: {
         currentEditorTab: EditorTab.Edit,
     },
-    renderCallback({inputs, state, updateState}) {
+    render({inputs, state, updateState}) {
         const editorElement =
             state.currentEditorTab === EditorTab.Edit
                 ? html`

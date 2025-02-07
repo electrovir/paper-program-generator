@@ -5,7 +5,7 @@ import {
     AgendaTemplate,
     agendaConfigShape,
     agendaTemplateShape,
-} from '../data/agenda/agenda-config';
+} from '../data/agenda/agenda-config.js';
 
 const agendaEditorStore = localForage.createInstance({
     description: 'Stores created agendas',

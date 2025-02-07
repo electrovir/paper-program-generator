@@ -1,6 +1,6 @@
 import {HTMLTemplateResult, css, defineElement, html} from 'element-vir';
-import {AgendaSectionByType} from '../../../../data/agenda/agenda-section';
-import {formatTextForPresentation} from '../../../../util/presentation-text';
+import {AgendaSectionByType} from '../../../../data/agenda/agenda-section.js';
+import {formatTextForPresentation} from '../../../../util/presentation-text.js';
 
 export const VirTablePresent = defineElement<{
     section: AgendaSectionByType<'table'>;
@@ -28,7 +28,7 @@ export const VirTablePresent = defineElement<{
             white-space: nowrap;
         }
     `,
-    renderCallback({inputs}) {
+    render({inputs}) {
         const rows = inputs.section.rows.map((row) => {
             const cells = row.map((cell) => {
                 const content: HTMLTemplateResult = formatTextForPresentation(cell.text);

@@ -1,10 +1,11 @@
-import {copyThroughJson, getEnumTypedValues, isEnumValue} from '@augment-vir/common';
+import {check} from '@augment-vir/assert';
+import {copyThroughJson, getEnumValues} from '@augment-vir/common';
 import {css, defineElement, html, listen} from 'element-vir';
-import {AgendaSectionByType} from '../../../../data/agenda/agenda-section';
-import {FontSize} from '../../../../data/font-size';
-import {SectionEditEvent} from '../../../events/section-edit.event';
-import {VirInput} from '../../common-elements/vir-input.element';
-import {VirSelect} from '../../common-elements/vir-select.element';
+import {AgendaSectionByType} from '../../../../data/agenda/agenda-section.js';
+import {FontSize} from '../../../../data/font-size.js';
+import {SectionEditEvent} from '../../../events/section-edit.event.js';
+import {VirInput} from '../../common-elements/vir-input.element.js';
+import {VirSelect} from '../../common-elements/vir-select.element.js';
 
 export const VirHeadingEditor = defineElement<{
     section: AgendaSectionByType<'heading'>;
@@ -26,7 +27,7 @@ export const VirHeadingEditor = defineElement<{
             flex-grow: 1;
         }
     `,
-    renderCallback({inputs, dispatch}) {
+    render({inputs, dispatch}) {
         return html`
             <${VirInput.assign({
                 value: inputs.section.title,
@@ -55,11 +56,11 @@ export const VirHeadingEditor = defineElement<{
             <div class="bottom-config">
                 <${VirSelect.assign({
                     label: 'subtitle size',
-                    options: getEnumTypedValues(FontSize),
+                    options: getEnumValues(FontSize),
                     value: inputs.section.subtitleSize,
                 })}
                     ${listen(VirSelect.events.valueChange, (event) => {
-                        if (!isEnumValue(event.detail, FontSize)) {
+                        if (!check.isEnumValue(event.detail, FontSize)) {
                             return;
                         }
 

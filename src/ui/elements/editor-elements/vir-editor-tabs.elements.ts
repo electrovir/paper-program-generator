@@ -1,6 +1,6 @@
-import {getEnumTypedValues} from '@augment-vir/common';
+import {getEnumValues} from '@augment-vir/common';
 import {css, defineElement, defineElementEvent, html, listen} from 'element-vir';
-import {VirButton} from '../common-elements/vir-button.element';
+import {VirButton} from '../common-elements/vir-button.element.js';
 
 export enum EditorTab {
     Edit = 'edit',
@@ -19,8 +19,8 @@ export const VirEditorTabs = defineElement<{currentTab: EditorTab}>()({
     events: {
         tabChange: defineElementEvent<EditorTab>(),
     },
-    renderCallback({inputs, events, dispatch}) {
-        const tabTemplates = getEnumTypedValues(EditorTab).map((tab) => {
+    render({inputs, events, dispatch}) {
+        const tabTemplates = getEnumValues(EditorTab).map((tab) => {
             return html`
                 <${VirButton.assign({
                     label: '',

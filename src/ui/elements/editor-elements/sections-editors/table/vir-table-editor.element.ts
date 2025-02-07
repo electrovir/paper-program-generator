@@ -1,17 +1,17 @@
-import {copyThroughJson, filterOutIndexes, isLengthAtLeast} from '@augment-vir/common';
+import {assert, assertWrap, check} from '@augment-vir/assert';
+import {copyThroughJson, filterOutIndexes} from '@augment-vir/common';
 import {classMap, css, defineElement, html, listen, nothing} from 'element-vir';
-import {assertDefined} from 'run-time-assertions';
-import {AgendaSectionByType} from '../../../../../data/agenda/agenda-section';
+import {AgendaSectionByType} from '../../../../../data/agenda/agenda-section.js';
 import {
     TableCell,
     TableRow,
     tableCellShape,
     tableRowShape,
-} from '../../../../../data/agenda/agenda-sections/table.section';
-import {SectionEditEvent} from '../../../../events/section-edit.event';
-import {VirButton} from '../../../common-elements/vir-button.element';
-import {VirInput} from '../../../common-elements/vir-input.element';
-import {VirTableSize, VirTableSizeDirection} from './vir-table-size.element';
+} from '../../../../../data/agenda/agenda-sections/table.section.js';
+import {SectionEditEvent} from '../../../../events/section-edit.event.js';
+import {VirButton} from '../../../common-elements/vir-button.element.js';
+import {VirInput} from '../../../common-elements/vir-input.element.js';
+import {VirTableSize, VirTableSizeDirection} from './vir-table-size.element.js';
 
 export const VirTableEditor = defineElement<{
     section: AgendaSectionByType<'table'>;
@@ -39,10 +39,10 @@ export const VirTableEditor = defineElement<{
             font-weight: bold;
         }
     `,
-    renderCallback({inputs, dispatch}) {
+    render({inputs, dispatch}) {
         const rows = inputs.section.rows;
 
-        if (!isLengthAtLeast(rows, 1)) {
+        if (!check.isLengthAtLeast(rows, 1)) {
             const newTableSection = copyThroughJson(inputs.section);
             newTableSection.rows.push([
                 {isHeader: true, text: ''},
@@ -66,9 +66,9 @@ export const VirTableEditor = defineElement<{
                             const newTableSection = copyThroughJson(inputs.section);
 
                             const rowToEdit = newTableSection.rows[rowIndex];
-                            assertDefined(rowToEdit);
+                            assert.isDefined(rowToEdit);
                             const cellToEdit = rowToEdit[cellIndex];
-                            assertDefined(cellToEdit);
+                            assert.isDefined(cellToEdit);
 
                             cellToEdit.text = event.detail;
 
@@ -114,7 +114,9 @@ export const VirTableEditor = defineElement<{
                         ${listen('click', () => {
                             const newTableSection = copyThroughJson(inputs.section);
 
-                            const newRow: TableRow = Array(newTableSection.rows[0]!.length)
+                            const newRow: TableRow = new Array(
+                                assertWrap.isDefined(newTableSection.rows[0]).length,
+                            )
                                 .fill(0)
                                 .map(() => {
                                     return {text: '', isHeader: false};
@@ -166,9 +168,10 @@ function adjustTableSize({
 }) {
     const newTableSection = copyThroughJson(currentTableSection);
 
-    if (!isLengthAtLeast(newTableSection.rows, 1)) {
-        return;
-    } else if (!isLengthAtLeast(newTableSection.rows[0], 1)) {
+    if (
+        !check.isLengthAtLeast(newTableSection.rows, 1) ||
+        !check.isLengthAtLeast(newTableSection.rows[0], 1)
+    ) {
         return;
     }
 
@@ -182,11 +185,9 @@ function adjustTableSize({
             return;
         } else if (newSize > columnCount) {
             newTableSection.rows.forEach((row) => {
-                Array(columnDiffCount)
-                    .fill(0)
-                    .forEach(() => {
-                        row.push(copyThroughJson(tableCellShape.defaultValue as TableCell));
-                    });
+                new Array(columnDiffCount).fill(0).forEach(() => {
+                    row.push(copyThroughJson(tableCellShape.defaultValue as TableCell));
+                });
             });
         } else {
             newTableSection.rows.forEach((row) => {
@@ -200,17 +201,13 @@ function adjustTableSize({
             return;
         } else if (newSize > rowCount) {
             const newRow = copyThroughJson(tableRowShape.defaultValue as TableRow);
-            Array(columnCount - 1)
-                .fill(0)
-                .forEach(() => {
-                    newRow.push(copyThroughJson(tableCellShape.defaultValue as TableCell));
-                });
+            new Array(columnCount - 1).fill(0).forEach(() => {
+                newRow.push(copyThroughJson(tableCellShape.defaultValue as TableCell));
+            });
 
-            Array(rowDiffCount)
-                .fill(0)
-                .forEach(() => {
-                    newTableSection.rows.push(copyThroughJson(newRow));
-                });
+            new Array(rowDiffCount).fill(0).forEach(() => {
+                newTableSection.rows.push(copyThroughJson(newRow));
+            });
         } else {
             newTableSection.rows.splice(-rowDiffCount);
         }
@@ -233,35 +230,11 @@ function makeHeader({
     const newTableSection = copyThroughJson(currentTableSection);
 
     const rowToEdit = newTableSection.rows[rowIndex];
-    assertDefined(rowToEdit);
+    assert.isDefined(rowToEdit);
     const cellToEdit = rowToEdit[cellIndex];
-    assertDefined(cellToEdit);
+    assert.isDefined(cellToEdit);
 
     cellToEdit.isHeader = !cellToEdit.isHeader;
-
-    dispatch(new SectionEditEvent(newTableSection));
-}
-
-function editTableCell({
-    currentTableSection,
-    rowIndex,
-    cellIndex,
-    newValue,
-    dispatch,
-}: {
-    currentTableSection: AgendaSectionByType<'table'>;
-    rowIndex: number;
-    cellIndex: number;
-    newValue: string;
-    dispatch: (event: Event) => void;
-}) {
-    const newTableSection: AgendaSectionByType<'table'> = copyThroughJson(currentTableSection);
-
-    const rowToEdit = newTableSection.rows[rowIndex];
-    assertDefined(rowToEdit);
-    const cellToEdit = rowToEdit[cellIndex];
-    assertDefined(cellToEdit);
-    cellToEdit.text = newValue;
 
     dispatch(new SectionEditEvent(newTableSection));
 }

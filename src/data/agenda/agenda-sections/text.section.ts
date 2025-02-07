@@ -1,5 +1,5 @@
 import {defineShape, enumShape, exact} from 'object-shape-tester';
-import {FontSize} from '../../font-size';
+import {FontSize} from '../../font-size.js';
 
 export enum TextAlignment {
     Center = 'center',

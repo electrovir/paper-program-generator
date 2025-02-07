@@ -1,11 +1,11 @@
+import {assert} from '@augment-vir/assert';
 import {copyThroughJson, filterOutIndexes} from '@augment-vir/common';
 import {css, defineElement, html, listen, nothing} from 'element-vir';
-import {assertDefined} from 'run-time-assertions';
-import {AgendaSection, AgendaSectionByType} from '../../../../data/agenda/agenda-section';
-import {chronologyRowShape} from '../../../../data/agenda/agenda-sections/chronology.section';
-import {SectionEditEvent} from '../../../events/section-edit.event';
-import {VirButton} from '../../common-elements/vir-button.element';
-import {VirInput} from '../../common-elements/vir-input.element';
+import {AgendaSection, AgendaSectionByType} from '../../../../data/agenda/agenda-section.js';
+import {chronologyRowShape} from '../../../../data/agenda/agenda-sections/chronology.section.js';
+import {SectionEditEvent} from '../../../events/section-edit.event.js';
+import {VirButton} from '../../common-elements/vir-button.element.js';
+import {VirInput} from '../../common-elements/vir-input.element.js';
 
 export const VirChronologyEditor = defineElement<{
     section: AgendaSectionByType<'chronology'>;
@@ -27,7 +27,7 @@ export const VirChronologyEditor = defineElement<{
             flex-grow: 1;
         }
     `,
-    renderCallback({inputs, dispatch}) {
+    render({inputs, dispatch}) {
         if (!inputs.section.rows.length) {
             const newChronologySection: AgendaSectionByType<'chronology'> = copyThroughJson(
                 inputs.section,
@@ -133,7 +133,7 @@ function editChronologyRow({
         copyThroughJson(currentChronologySection);
 
     const rowToEdit = newChronologySection.rows[rowIndex];
-    assertDefined(rowToEdit);
+    assert.isDefined(rowToEdit);
     rowToEdit[side] = newValue;
 
     dispatch(new SectionEditEvent(newChronologySection));

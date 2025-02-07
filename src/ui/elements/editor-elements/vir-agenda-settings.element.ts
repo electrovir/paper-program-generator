@@ -1,13 +1,14 @@
-import {copyThroughJson, getEnumTypedValues, isEnumValue} from '@augment-vir/common';
+import {check} from '@augment-vir/assert';
+import {copyThroughJson, getEnumValues} from '@augment-vir/common';
 import {defineElement, html, listen} from 'element-vir';
-import {AgendaConfig, PaperFill} from '../../../data/agenda/agenda-config';
-import {AgendaEditEvent} from '../../events/agenda-edit.event';
-import {VirCheckbox} from '../common-elements/vir-checkbox.element';
-import {VirSelect} from '../common-elements/vir-select.element';
+import {AgendaConfig, PaperFill} from '../../../data/agenda/agenda-config.js';
+import {AgendaEditEvent} from '../../events/agenda-edit.event.js';
+import {VirCheckbox} from '../common-elements/vir-checkbox.element.js';
+import {VirSelect} from '../common-elements/vir-select.element.js';
 
 export const VirAgendaSettings = defineElement<{agendaConfig: AgendaConfig}>()({
     tagName: 'vir-agenda-settings',
-    renderCallback({inputs, dispatch}) {
+    render({inputs, dispatch}) {
         function mutateAgenda(
             mutateCallback: (
                 newAgendaConfig: AgendaConfig,
@@ -25,12 +26,12 @@ export const VirAgendaSettings = defineElement<{agendaConfig: AgendaConfig}>()({
         return html`
             <${VirSelect.assign({
                 label: 'Paper fill',
-                options: getEnumTypedValues(PaperFill),
+                options: getEnumValues(PaperFill),
                 value: inputs.agendaConfig.paperFill,
             })}
                 ${listen(VirSelect.events.valueChange, (event) => {
                     mutateAgenda((newAgenda) => {
-                        if (!isEnumValue(event.detail, PaperFill)) {
+                        if (!check.isEnumValue(event.detail, PaperFill)) {
                             return false;
                         }
 

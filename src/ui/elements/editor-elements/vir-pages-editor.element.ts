@@ -1,26 +1,21 @@
-import {
-    copyThroughJson,
-    filterOutIndexes,
-    getEnumTypedValues,
-    isEnumValue,
-} from '@augment-vir/common';
+import {assert, check} from '@augment-vir/assert';
+import {copyThroughJson, filterOutIndexes, getEnumValues} from '@augment-vir/common';
 import {css, defineElement, html, listen, nothing} from 'element-vir';
-import {assertDefined} from 'run-time-assertions';
 import {
     AgendaConfig,
     AgendaPage,
     PageSpacing,
     agendaPageShape,
-} from '../../../data/agenda/agenda-config';
+} from '../../../data/agenda/agenda-config.js';
 import {
     AgendaSection,
     ensureValidAgendaSectionType,
     sectionShapesByType,
-} from '../../../data/agenda/agenda-section';
-import {AgendaEditEvent} from '../../events/agenda-edit.event';
-import {VirButton} from '../common-elements/vir-button.element';
-import {VirSelect} from '../common-elements/vir-select.element';
-import {VirSectionEditor} from './vir-section-editor.element';
+} from '../../../data/agenda/agenda-section.js';
+import {AgendaEditEvent} from '../../events/agenda-edit.event.js';
+import {VirButton} from '../common-elements/vir-button.element.js';
+import {VirSelect} from '../common-elements/vir-select.element.js';
+import {VirSectionEditor} from './vir-section-editor.element.js';
 
 export const VirPagesEditor = defineElement<{agendaConfig: AgendaConfig}>()({
     tagName: 'vir-pages-editor',
@@ -49,7 +44,7 @@ export const VirPagesEditor = defineElement<{agendaConfig: AgendaConfig}>()({
             align-items: center;
         }
     `,
-    renderCallback({inputs, dispatch}) {
+    render({inputs, dispatch}) {
         function mutateAgendaConfig(
             mutateCallback: (newAgendaConfig: AgendaConfig) => void | AgendaConfig,
         ) {
@@ -77,7 +72,7 @@ export const VirPagesEditor = defineElement<{agendaConfig: AgendaConfig}>()({
                         ${listen(VirSectionEditor.events.sectionEdit, (event) => {
                             mutateAgendaConfig((newAgendaConfig) => {
                                 const editedPage = newAgendaConfig.pages[pageIndex];
-                                assertDefined(editedPage);
+                                assert.isDefined(editedPage);
 
                                 editedPage.sections[sectionIndex] = event.detail;
                             });
@@ -85,7 +80,7 @@ export const VirPagesEditor = defineElement<{agendaConfig: AgendaConfig}>()({
                         ${listen(VirSectionEditor.events.newSection, (event) => {
                             mutateAgendaConfig((newAgendaConfig) => {
                                 const editedPage = newAgendaConfig.pages[pageIndex];
-                                assertDefined(editedPage);
+                                assert.isDefined(editedPage);
 
                                 const newSection = copyThroughJson(
                                     sectionShapesByType[ensureValidAgendaSectionType(event.detail)]
@@ -104,8 +99,8 @@ export const VirPagesEditor = defineElement<{agendaConfig: AgendaConfig}>()({
                         ${listen(VirSectionEditor.events.sectionDelete, () => {
                             mutateAgendaConfig((newAgendaConfig) => {
                                 const editedPage = newAgendaConfig.pages[pageIndex];
-                                assertDefined(editedPage);
-                                const newSections = filterOutIndexes(editedPage?.sections, [
+                                assert.isDefined(editedPage);
+                                const newSections = filterOutIndexes(editedPage.sections, [
                                     sectionIndex,
                                 ]);
 
@@ -138,14 +133,14 @@ export const VirPagesEditor = defineElement<{agendaConfig: AgendaConfig}>()({
                         ></${VirButton}>
                         <${VirSelect.assign({
                             label: 'spacing',
-                            options: getEnumTypedValues(PageSpacing),
+                            options: getEnumValues(PageSpacing),
                             value: page.spacing,
                         })}
                             ${listen(VirSelect.events.valueChange, (event) => {
                                 mutateAgendaConfig((newAgendaConfig) => {
                                     const pageToEdit = newAgendaConfig.pages[pageIndex];
-                                    assertDefined(pageToEdit);
-                                    if (!isEnumValue(event.detail, PageSpacing)) {
+                                    assert.isDefined(pageToEdit);
+                                    if (!check.isEnumValue(event.detail, PageSpacing)) {
                                         throw new Error(
                                             `Invalid page spacing selected: '${event.detail}'`,
                                         );

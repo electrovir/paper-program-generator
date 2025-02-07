@@ -1,12 +1,12 @@
-import {extractEventTarget} from '@augment-vir/browser';
-import {extractErrorMessage, parseJson, wrapInTry} from '@augment-vir/common';
+import {assert} from '@augment-vir/assert';
+import {extractErrorMessage, wrapInTry} from '@augment-vir/common';
+import {extractEventTarget} from '@augment-vir/web';
 import {css, defineElement, html, listen, onDomCreated} from 'element-vir';
 import {assertValidShape} from 'object-shape-tester';
-import {assertInstanceOf} from 'run-time-assertions';
-import {agendaConfigShape} from '../../../data/agenda/agenda-config';
-import {AgendaEditEvent} from '../../events/agenda-edit.event';
-import {VirButton} from '../common-elements/vir-button.element';
-import {VirErrorMessage} from '../common-elements/vir-error-message.element';
+import {agendaConfigShape} from '../../../data/agenda/agenda-config.js';
+import {AgendaEditEvent} from '../../events/agenda-edit.event.js';
+import {VirButton} from '../common-elements/vir-button.element.js';
+import {VirErrorMessage} from '../common-elements/vir-error-message.element.js';
 
 export const VirRawJsonEditor = defineElement<{agendaConfig: unknown}>()({
     tagName: 'vir-raw-json-editor',
@@ -34,15 +34,10 @@ export const VirRawJsonEditor = defineElement<{agendaConfig: unknown}>()({
         textAreaElement: undefined as undefined | HTMLTextAreaElement,
         inputJson: '',
     },
-    renderCallback({inputs, state, updateState, dispatch}) {
+    render({inputs, state, updateState, dispatch}) {
         const json = state.inputJson || JSON.stringify(inputs.agendaConfig, null, 4);
 
-        const parsedJson = parseJson({
-            jsonString: json,
-            errorHandler() {
-                return {};
-            },
-        });
+        const parsedJson = wrapInTry(() => JSON.parse(json), {fallbackValue: {}});
 
         const configError = wrapInTry(() => assertValidShape(parsedJson, agendaConfigShape));
 
@@ -50,7 +45,7 @@ export const VirRawJsonEditor = defineElement<{agendaConfig: unknown}>()({
             <textarea
                 .value=${json}
                 ${onDomCreated((element) => {
-                    assertInstanceOf(element, HTMLTextAreaElement);
+                    assert.instanceOf(element, HTMLTextAreaElement);
                     updateState({textAreaElement: element});
                 })}
                 ${listen('input', (event) => {

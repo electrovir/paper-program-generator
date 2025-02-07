@@ -1,6 +1,6 @@
 import {css, defineElement, html} from 'element-vir';
-import {AgendaSectionByType} from '../../../../data/agenda/agenda-section';
-import {formatTextForPresentation} from '../../../../util/presentation-text';
+import {AgendaSectionByType} from '../../../../data/agenda/agenda-section.js';
+import {formatTextForPresentation} from '../../../../util/presentation-text.js';
 
 export const VirChronologyPresent = defineElement<{
     section: AgendaSectionByType<'chronology'>;
@@ -45,7 +45,7 @@ export const VirChronologyPresent = defineElement<{
             height: calc(1em - 2px);
         }
     `,
-    renderCallback({inputs}) {
+    render({inputs}) {
         const rowTemplates = inputs.section.rows.map((row) => {
             return html`
                 <div class="row">

@@ -1,10 +1,10 @@
 import {copyThroughJson, filterOutIndexes, toEnsuredNumber} from '@augment-vir/common';
 import {css, defineElement, html, listen, nothing} from 'element-vir';
-import {ViraImage, ViraImageSlotNameEnum} from 'vira';
-import {AgendaSection, AgendaSectionByType} from '../../../../data/agenda/agenda-section';
-import {SectionEditEvent} from '../../../events/section-edit.event';
-import {VirButton} from '../../common-elements/vir-button.element';
-import {VirInput} from '../../common-elements/vir-input.element';
+import {ViraImage} from 'vira';
+import {AgendaSection, AgendaSectionByType} from '../../../../data/agenda/agenda-section.js';
+import {SectionEditEvent} from '../../../events/section-edit.event.js';
+import {VirButton} from '../../common-elements/vir-button.element.js';
+import {VirInput} from '../../common-elements/vir-input.element.js';
 
 export const VirPhotosEditor = defineElement<{
     section: AgendaSectionByType<'photos'>;
@@ -38,7 +38,7 @@ export const VirPhotosEditor = defineElement<{
             display: flex;
         }
     `,
-    renderCallback({inputs, dispatch}) {
+    render({inputs, dispatch}) {
         if (!inputs.section.photoUrls.length) {
             const newPhotosSection: AgendaSectionByType<'photos'> = copyThroughJson(inputs.section);
             newPhotosSection.photoUrls.push('');
@@ -72,7 +72,7 @@ export const VirPhotosEditor = defineElement<{
                     <${ViraImage.assign({
                         imageUrl: photoUrl,
                     })}>
-                        <div slot=${ViraImageSlotNameEnum.Error}></div>
+                        <div slot=${ViraImage.slotNames.error}></div>
                     </${ViraImage}>
                     <${VirInput.assign({
                         label: 'photo url',

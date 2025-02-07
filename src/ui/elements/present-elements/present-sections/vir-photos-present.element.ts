@@ -2,7 +2,7 @@ import {addPx} from '@augment-vir/common';
 import {css, defineElement, html} from 'element-vir';
 import {setCssVarValue} from 'lit-css-vars';
 import {ViraImage} from 'vira';
-import {AgendaSectionByType} from '../../../../data/agenda/agenda-section';
+import {AgendaSectionByType} from '../../../../data/agenda/agenda-section.js';
 
 export const VirPhotosPresent = defineElement<{
     section: AgendaSectionByType<'photos'>;
@@ -24,7 +24,7 @@ export const VirPhotosPresent = defineElement<{
             max-width: ${cssVars['vir-photos-present-image-width'].value};
         }
     `,
-    renderCallback({inputs, host, cssVars}) {
+    render({inputs, host, cssVars}) {
         setCssVarValue({
             forCssVar: cssVars['vir-photos-present-image-height'],
             onElement: host,

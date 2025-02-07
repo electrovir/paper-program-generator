@@ -1,23 +1,23 @@
+import {check} from '@augment-vir/assert';
 import {randomString, wrapInTry} from '@augment-vir/common';
-import {asyncProp, css, defineElement, html, isError, isResolved, listen} from 'element-vir';
+import {asyncProp, css, defineElement, html, isAsyncError, isResolved, listen} from 'element-vir';
 import {assertValidShape, isValidShape} from 'object-shape-tester';
-import {isRunTimeType} from 'run-time-assertions';
 import {LoaderAnimated24Icon, ViraIcon} from 'vira';
 import {
     AgendaConfig,
     AgendaTemplate,
     agendaConfigShape,
     agendaTemplateShape,
-} from '../../data/agenda/agenda-config';
-import {StorageKey, loadEditorData, storeEditorData} from '../../services/agenda-editor-store';
-import {setPageOrientation} from '../../util/set-page-orientation';
-import {AgendaEditEvent} from '../events/agenda-edit.event';
-import {SaveAsTemplateEvent} from '../events/save-as-template.event';
-import {TemplatesEditEvent} from '../events/templates-edit.event';
-import {VirErrorMessage} from './common-elements/vir-error-message.element';
-import {VirAgendaEditor} from './editor-elements/vir-agenda-editor.element';
-import {VirRawJsonEditor} from './editor-elements/vir-raw-json-editor.element';
-import {VirAgendaPresent} from './present-elements/vir-agenda-present.element';
+} from '../../data/agenda/agenda-config.js';
+import {StorageKey, loadEditorData, storeEditorData} from '../../services/agenda-editor-store.js';
+import {setPageOrientation} from '../../util/set-page-orientation.js';
+import {AgendaEditEvent} from '../events/agenda-edit.event.js';
+import {SaveAsTemplateEvent} from '../events/save-as-template.event.js';
+import {TemplatesEditEvent} from '../events/templates-edit.event.js';
+import {VirErrorMessage} from './common-elements/vir-error-message.element.js';
+import {VirAgendaEditor} from './editor-elements/vir-agenda-editor.element.js';
+import {VirRawJsonEditor} from './editor-elements/vir-raw-json-editor.element.js';
+import {VirAgendaPresent} from './present-elements/vir-agenda-present.element.js';
 
 export const VirAgendaEditorApp = defineElement<{
     defaultAgendaConfig?: Readonly<AgendaConfig> | undefined;
@@ -79,22 +79,22 @@ export const VirAgendaEditorApp = defineElement<{
         userAgendaTemplates: asyncProp({
             defaultValue: loadEditorData(StorageKey.AgendaTemplates).then(
                 (templates): AgendaTemplate[] => {
-                    if (!isRunTimeType(templates, 'array')) {
+                    if (!check.isArray(templates)) {
                         return [];
                     }
 
                     const validTemplates: AgendaTemplate[] = templates.filter(
                         (agendaTemplate): agendaTemplate is AgendaTemplate =>
                             isValidShape(agendaTemplate, agendaTemplateShape),
-                    ) /** The filter type guard isn't working. */ as AgendaTemplate[];
+                    ); /** The filter type guard isn't working. */
 
                     return validTemplates;
                 },
             ),
         }),
     },
-    renderCallback({state, inputs}) {
-        if (state.agendaConfig.value == undefined || isError(state.agendaConfig.value)) {
+    render({state, inputs}) {
+        if (state.agendaConfig.value == undefined || isAsyncError(state.agendaConfig.value)) {
             state.agendaConfig.setValue(inputs.defaultAgendaConfig);
         }
 
@@ -136,7 +136,8 @@ export const VirAgendaEditorApp = defineElement<{
         setPageOrientation(agendaConfig.paperFill);
 
         const userTemplates: AgendaTemplate[] =
-            isResolved(state.userAgendaTemplates.value) && !isError(state.userAgendaTemplates.value)
+            isResolved(state.userAgendaTemplates.value) &&
+            !isAsyncError(state.userAgendaTemplates.value)
                 ? state.userAgendaTemplates.value
                 : [];
 

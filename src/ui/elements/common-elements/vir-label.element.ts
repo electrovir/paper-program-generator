@@ -44,7 +44,7 @@ export const VirLabel = defineElement<{
             font-size: 0.5em;
         }
     `,
-    renderCallback({inputs}) {
+    render({inputs}) {
         return html`
             <label>
                 <p class="label">

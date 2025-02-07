@@ -1,6 +1,6 @@
 import {css, defineElement, html} from 'element-vir';
 import {noNativeSpacing} from 'vira';
-import {AgendaSection} from '../../../data/agenda/agenda-section';
+import {AgendaSection} from '../../../data/agenda/agenda-section.js';
 
 export const VirSectionTypeHeader = defineElement<{
     section: Pick<AgendaSection, 'sectionType'>;
@@ -15,7 +15,7 @@ export const VirSectionTypeHeader = defineElement<{
             ${noNativeSpacing};
         }
     `,
-    renderCallback({inputs}) {
+    render({inputs}) {
         return html`
             <h4>${inputs.section.sectionType}</h4>
         `;

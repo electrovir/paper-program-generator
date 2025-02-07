@@ -1,12 +1,12 @@
 import {copyThroughJson} from '@augment-vir/common';
 import {css, defineElement, html, listen} from 'element-vir';
 import {ViraButton} from 'vira';
-import {AgendaTemplate} from '../../../../data/agenda/agenda-config';
-import {AgendaEditEvent} from '../../../events/agenda-edit.event';
-import {SaveAsTemplateEvent} from '../../../events/save-as-template.event';
-import {TemplatesEditEvent} from '../../../events/templates-edit.event';
-import {VirInput} from '../../common-elements/vir-input.element';
-import {VirAgendaTemplateEntry} from './vir-agenda-template-entry.element';
+import {AgendaTemplate} from '../../../../data/agenda/agenda-config.js';
+import {AgendaEditEvent} from '../../../events/agenda-edit.event.js';
+import {SaveAsTemplateEvent} from '../../../events/save-as-template.event.js';
+import {TemplatesEditEvent} from '../../../events/templates-edit.event.js';
+import {VirInput} from '../../common-elements/vir-input.element.js';
+import {VirAgendaTemplateEntry} from './vir-agenda-template-entry.element.js';
 
 export const VirAgendaTemplates = defineElement<{
     userTemplates: ReadonlyArray<AgendaTemplate>;
@@ -39,7 +39,7 @@ export const VirAgendaTemplates = defineElement<{
             gap: 8px;
         }
     `,
-    renderCallback({state, inputs, dispatch, updateState}) {
+    render({state, inputs, dispatch, updateState}) {
         function modifyTemplates(callback: (newTemplates: AgendaTemplate[]) => void) {
             const newTemplates = copyThroughJson(inputs.userTemplates as AgendaTemplate[]);
             callback(newTemplates);

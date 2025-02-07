@@ -1,6 +1,6 @@
 import {css, defineElement, html} from 'element-vir';
-import {FontSize} from '../../../data/font-size';
-import {fontSizeCssVars} from '../../styles/font-css-vars';
+import {FontSize} from '../../../data/font-size.js';
+import {fontSizeCssVars} from '../../styles/font-css-vars.js';
 
 export const VirFont = defineElement<{size: FontSize}>()({
     tagName: 'vir-font',
@@ -50,7 +50,7 @@ export const VirFont = defineElement<{size: FontSize}>()({
             font-size: ${fontSizeCssVars['vir-font-tiny'].value};
         }
     `,
-    renderCallback() {
+    render() {
         return html`
             <slot></slot>
         `;

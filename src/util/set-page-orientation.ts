@@ -1,7 +1,7 @@
+import {check} from '@augment-vir/assert';
 import {addPrefix} from '@augment-vir/common';
 import {CSSResult, css} from 'element-vir';
-import {isInstanceOf} from 'run-time-assertions';
-import {PaperFill} from '../data/agenda/agenda-config';
+import {PaperFill} from '../data/agenda/agenda-config.js';
 
 const orientationStyleId = 'vir-agenda-editor-orientation-style';
 const orientationStyleSelector = addPrefix({value: orientationStyleId, prefix: '#'});
@@ -23,13 +23,13 @@ export function setPageOrientation(paperFill: PaperFill) {
 
 function getOrCreatePageOrientationStyle(): HTMLStyleElement {
     const existingElement = document.head.querySelector(orientationStyleSelector);
-    if (isInstanceOf(existingElement, HTMLStyleElement)) {
+    if (check.instanceOf(existingElement, HTMLStyleElement)) {
         return existingElement;
     }
 
     const newElement = document.createElement('style');
     newElement.setAttribute('id', orientationStyleId);
-    document.head.appendChild(newElement);
+    document.head.append(newElement);
 
     return newElement;
 }

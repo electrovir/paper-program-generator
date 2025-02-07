@@ -1,7 +1,7 @@
-import {extractEventTarget} from '@augment-vir/browser';
+import {assert} from '@augment-vir/assert';
+import {extractEventTarget} from '@augment-vir/web';
 import {defineElement, defineElementEvent, html, listen, onDomCreated, repeat} from 'element-vir';
-import {assertInstanceOf} from 'run-time-assertions';
-import {VirLabel} from './vir-label.element';
+import {VirLabel} from './vir-label.element.js';
 
 export const VirSelect = defineElement<{
     value: string;
@@ -15,7 +15,7 @@ export const VirSelect = defineElement<{
     stateInitStatic: {
         selectElement: undefined as undefined | HTMLSelectElement,
     },
-    renderCallback({inputs, dispatch, events, state, updateState}) {
+    render({inputs, dispatch, events, state, updateState}) {
         assertValidOptions(inputs.options);
 
         if (state.selectElement && inputs.value !== state.selectElement.value) {
@@ -29,7 +29,7 @@ export const VirSelect = defineElement<{
                 <select
                     .value=${inputs.value}
                     ${onDomCreated((element) => {
-                        assertInstanceOf(element, HTMLSelectElement);
+                        assert.instanceOf(element, HTMLSelectElement);
 
                         updateState({
                             selectElement: element,

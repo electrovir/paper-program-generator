@@ -1,4 +1,5 @@
-import {copyThroughJson, getEnumTypedValues, isEnumValue} from '@augment-vir/common';
+import {check} from '@augment-vir/assert';
+import {copyThroughJson, getEnumValues} from '@augment-vir/common';
 import {
     DeclarativeElementDefinition,
     css,
@@ -8,34 +9,28 @@ import {
     listen,
     nothing,
 } from 'element-vir';
-import {ReadonlyDeep} from 'type-fest';
 import {
     AgendaSection,
     AgendaSectionType,
     allSectionTypes,
     ensureValidAgendaSectionType,
     sectionShapesByType,
-} from '../../../data/agenda/agenda-section';
-import {FontSize} from '../../../data/font-size';
-import {SectionEditEvent} from '../../events/section-edit.event';
-import {VirButton} from '../common-elements/vir-button.element';
-import {VirSectionTypeHeader} from '../common-elements/vir-section-type-header.element';
-import {VirSelect} from '../common-elements/vir-select.element';
-import {VirTableEditor} from './sections-editors/table/vir-table-editor.element';
-import {VirChronologyEditor} from './sections-editors/vir-chronology-editor.element';
-import {VirHeadingEditor} from './sections-editors/vir-heading-editor.element';
-import {VirPhotosEditor} from './sections-editors/vir-photos-editor.element';
-import {VirTextEditor} from './sections-editors/vir-text-editor.element';
+} from '../../../data/agenda/agenda-section.js';
+import {FontSize} from '../../../data/font-size.js';
+import {SectionEditEvent} from '../../events/section-edit.event.js';
+import {VirButton} from '../common-elements/vir-button.element.js';
+import {VirSectionTypeHeader} from '../common-elements/vir-section-type-header.element.js';
+import {VirSelect} from '../common-elements/vir-select.element.js';
+import {VirTableEditor} from './sections-editors/table/vir-table-editor.element.js';
+import {VirChronologyEditor} from './sections-editors/vir-chronology-editor.element.js';
+import {VirHeadingEditor} from './sections-editors/vir-heading-editor.element.js';
+import {VirPhotosEditor} from './sections-editors/vir-photos-editor.element.js';
+import {VirTextEditor} from './sections-editors/vir-text-editor.element.js';
 
 const sectionEditorElementByType: Readonly<{
     [SectionType in AgendaSectionType]: DeclarativeElementDefinition<
         any,
-        {section: Extract<AgendaSection, {sectionType: SectionType}>},
-        any,
-        any,
-        any,
-        any,
-        any
+        {section: Extract<AgendaSection, {sectionType: SectionType}>}
     >;
 }> = {
     chronology: VirChronologyEditor,
@@ -70,7 +65,7 @@ export const VirSectionEditor = defineElement<{
             flex-basis: 0;
         }
     `,
-    renderCallback({inputs, dispatch, events}) {
+    render({inputs, dispatch, events}) {
         const sectionElementDefinition = sectionEditorElementByType[inputs.section.sectionType];
 
         const sectionInputs: {section: AgendaSection} = {section: inputs.section} as const;
@@ -80,13 +75,14 @@ export const VirSectionEditor = defineElement<{
                 ? html`
                       <${VirSelect.assign({
                           label: 'size',
-                          options: getEnumTypedValues(FontSize),
+                          options: getEnumValues(FontSize),
                           value: inputs.section.size,
                       })}
                           ${listen(VirSelect.events.valueChange, (event) => {
-                              if (!('size' in inputs.section)) {
-                                  return;
-                              } else if (!isEnumValue(event.detail, FontSize)) {
+                              if (
+                                  !('size' in inputs.section) ||
+                                  !check.isEnumValue(event.detail, FontSize)
+                              ) {
                                   return;
                               }
 
@@ -127,7 +123,7 @@ export const VirSectionEditor = defineElement<{
                             event.detail,
                         );
                         if (newSectionType !== inputs.section.sectionType) {
-                            const newAgendaSection: ReadonlyDeep<AgendaSection> = copyThroughJson(
+                            const newAgendaSection = copyThroughJson(
                                 sectionShapesByType[newSectionType].defaultValue,
                             );
                             dispatch(new events.sectionEdit(newAgendaSection as AgendaSection));

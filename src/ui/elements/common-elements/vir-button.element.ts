@@ -1,6 +1,6 @@
 import {css, defineElement, html} from 'element-vir';
 import {ViraButton, ViraIconSvg} from 'vira';
-import {VirLabel} from './vir-label.element';
+import {VirLabel} from './vir-label.element.js';
 
 export const VirButton = defineElement<{
     text: string;
@@ -20,7 +20,7 @@ export const VirButton = defineElement<{
             max-height: 100%;
         }
     `,
-    renderCallback({inputs}) {
+    render({inputs}) {
         return html`
             <${VirLabel.assign({
                 label: inputs.label,

@@ -1,16 +1,16 @@
 import {defineShape, enumShape, exact} from 'object-shape-tester';
-import {FontSize} from '../../font-size';
+import {FontSize} from '../../font-size.js';
 
 export const chronologyRowShape = defineShape({
     left: '',
     right: '',
 });
 
-export type ChronologyRow = typeof chronologyRowShape.runTimeType;
+export type ChronologyRow = typeof chronologyRowShape.runtimeType;
 
 export const chronologyTableShape = defineShape([chronologyRowShape]);
 
-export type ChronologyTable = typeof chronologyTableShape.runTimeType;
+export type ChronologyTable = typeof chronologyTableShape.runtimeType;
 
 export const chronologySectionShape = defineShape({
     sectionType: exact('chronology'),

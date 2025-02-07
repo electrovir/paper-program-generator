@@ -1,7 +1,12 @@
 import {classMap, css, defineElement, html} from 'element-vir';
-import {AgendaConfig, PageSpacing, PaperFill, PaperSize} from '../../../data/agenda/agenda-config';
-import {generateFontSizes} from '../../styles/font-css-vars';
-import {VirSectionPresent} from './vir-section-present.element';
+import {
+    AgendaConfig,
+    PageSpacing,
+    PaperFill,
+    PaperSize,
+} from '../../../data/agenda/agenda-config.js';
+import {generateFontSizes} from '../../styles/font-css-vars.js';
+import {VirSectionPresent} from './vir-section-present.element.js';
 
 export const VirAgendaPresent = defineElement<{agendaConfig: Readonly<AgendaConfig>}>()({
     tagName: 'vir-agenda-present',
@@ -11,6 +16,7 @@ export const VirAgendaPresent = defineElement<{agendaConfig: Readonly<AgendaConf
     },
     hostClasses: {
         'vir-agenda-present-letter': ({inputs}) =>
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             inputs.agendaConfig.paperSize === PaperSize.Letter,
         'vir-agenda-present-half-sheet': ({inputs}) =>
             inputs.agendaConfig.paperFill === PaperFill.HalfSheet,
@@ -135,7 +141,7 @@ export const VirAgendaPresent = defineElement<{agendaConfig: Readonly<AgendaConf
             }
         }
     `,
-    renderCallback({inputs}) {
+    render({inputs}) {
         const pageTemplates = inputs.agendaConfig.pages.map((page) => {
             const sectionTemplates = page.sections.map((section) => {
                 return html`
@@ -151,20 +157,18 @@ export const VirAgendaPresent = defineElement<{agendaConfig: Readonly<AgendaConf
                     ? 2
                     : 1;
 
-            const pageTemplates = Array(duplicateCount)
-                .fill(0)
-                .map((value, index) => {
-                    return html`
-                        <section
-                            class="page-present ${classMap({
-                                duplicate: index > 0,
-                                'space-start': page.spacing === PageSpacing.Start,
-                            })}"
-                        >
-                            <div class="padding-marker">${sectionTemplates}</div>
-                        </section>
-                    `;
-                });
+            const pageTemplates = new Array(duplicateCount).fill(0).map((value, index) => {
+                return html`
+                    <section
+                        class="page-present ${classMap({
+                            duplicate: index > 0,
+                            'space-start': page.spacing === PageSpacing.Start,
+                        })}"
+                    >
+                        <div class="padding-marker">${sectionTemplates}</div>
+                    </section>
+                `;
+            });
 
             return pageTemplates;
         });

@@ -1,6 +1,6 @@
-import {extractEventTarget} from '@augment-vir/browser';
+import {extractEventTarget} from '@augment-vir/web';
 import {css, defineElement, defineElementEvent, html, listen} from 'element-vir';
-import {VirLabel} from './vir-label.element';
+import {VirLabel} from './vir-label.element.js';
 
 export const VirTextArea = defineElement<{value: string; label: string; blockResize?: boolean}>()({
     tagName: 'vir-text-area',
@@ -25,7 +25,7 @@ export const VirTextArea = defineElement<{value: string; label: string; blockRes
             box-sizing: border-box;
         }
     `,
-    renderCallback({inputs, dispatch, events}) {
+    render({inputs, dispatch, events}) {
         return html`
             <${VirLabel.assign({
                 label: inputs.label,

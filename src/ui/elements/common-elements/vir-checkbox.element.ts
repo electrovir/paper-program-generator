@@ -1,6 +1,6 @@
+import {assert} from '@augment-vir/assert';
 import {css, defineElement, defineElementEvent, html, listen, onDomCreated} from 'element-vir';
-import {assertInstanceOf} from 'run-time-assertions';
-import {VirLabel} from './vir-label.element';
+import {VirLabel} from './vir-label.element.js';
 
 export const VirCheckbox = defineElement<{
     checked: boolean;
@@ -28,7 +28,7 @@ export const VirCheckbox = defineElement<{
     stateInitStatic: {
         inputElement: undefined as undefined | HTMLInputElement,
     },
-    renderCallback({inputs, dispatch, events, state, updateState}) {
+    render({inputs, dispatch, events, state, updateState}) {
         if (state.inputElement && state.inputElement.checked !== inputs.checked) {
             state.inputElement.checked = inputs.checked;
         }
@@ -46,7 +46,7 @@ export const VirCheckbox = defineElement<{
                     type="checkbox"
                     .checked=${inputs.checked}
                     ${onDomCreated((element) => {
-                        assertInstanceOf(element, HTMLInputElement);
+                        assert.instanceOf(element, HTMLInputElement);
                         updateState({
                             inputElement: element,
                         });

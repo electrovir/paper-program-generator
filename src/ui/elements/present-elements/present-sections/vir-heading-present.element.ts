@@ -1,7 +1,7 @@
 import {css, defineElement, html, nothing} from 'element-vir';
 import {noNativeSpacing} from 'vira';
-import {AgendaSectionByType} from '../../../../data/agenda/agenda-section';
-import {VirFont} from '../../common-elements/vir-font.element';
+import {AgendaSectionByType} from '../../../../data/agenda/agenda-section.js';
+import {VirFont} from '../../common-elements/vir-font.element.js';
 
 export const VirHeadingPresent = defineElement<{
     section: AgendaSectionByType<'heading'>;
@@ -35,7 +35,7 @@ export const VirHeadingPresent = defineElement<{
             font-weight: normal;
         }
     `,
-    renderCallback({inputs}) {
+    render({inputs}) {
         const subtitleTemplate = inputs.section.subtitle
             ? html`
                   <h2>${inputs.section.subtitle}</h2>

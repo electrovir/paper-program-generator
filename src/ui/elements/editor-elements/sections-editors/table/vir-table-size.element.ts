@@ -1,6 +1,6 @@
 import {css, defineElement, defineElementEvent, html, listen} from 'element-vir';
-import {VirButton} from '../../../common-elements/vir-button.element';
-import {VirLabel} from '../../../common-elements/vir-label.element';
+import {VirButton} from '../../../common-elements/vir-button.element.js';
+import {VirLabel} from '../../../common-elements/vir-label.element.js';
 
 export enum VirTableSizeDirection {
     Horizontal = 'horizontal',
@@ -45,7 +45,7 @@ export const VirTableSize = defineElement<{
             font-size: 2em;
         }
     `,
-    renderCallback({inputs, dispatch, events}) {
+    render({inputs, dispatch, events}) {
         return html`
             <${VirLabel.assign({
                 label: inputs.label,

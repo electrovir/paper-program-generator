@@ -1,10 +1,11 @@
-import {copyThroughJson, getEnumTypedValues, isEnumValue} from '@augment-vir/common';
+import {check} from '@augment-vir/assert';
+import {copyThroughJson, getEnumValues} from '@augment-vir/common';
 import {css, defineElement, html, listen} from 'element-vir';
-import {AgendaSectionByType} from '../../../../data/agenda/agenda-section';
-import {TextAlignment} from '../../../../data/agenda/agenda-sections/text.section';
-import {SectionEditEvent} from '../../../events/section-edit.event';
-import {VirSelect} from '../../common-elements/vir-select.element';
-import {VirTextArea} from '../../common-elements/vir-text-area.element';
+import {AgendaSectionByType} from '../../../../data/agenda/agenda-section.js';
+import {TextAlignment} from '../../../../data/agenda/agenda-sections/text.section.js';
+import {SectionEditEvent} from '../../../events/section-edit.event.js';
+import {VirSelect} from '../../common-elements/vir-select.element.js';
+import {VirTextArea} from '../../common-elements/vir-text-area.element.js';
 
 export const VirTextEditor = defineElement<{
     section: AgendaSectionByType<'text'>;
@@ -17,11 +18,11 @@ export const VirTextEditor = defineElement<{
             gap: 2px;
         }
     `,
-    renderCallback({inputs, dispatch}) {
+    render({inputs, dispatch}) {
         return html`
             <${VirSelect.assign({
                 label: 'align',
-                options: getEnumTypedValues(TextAlignment),
+                options: getEnumValues(TextAlignment),
                 value: inputs.section.alignment,
             })}
                 ${listen(VirSelect.events.valueChange, (event) => {
@@ -29,7 +30,7 @@ export const VirTextEditor = defineElement<{
 
                     const newAlignment = event.detail;
 
-                    if (!isEnumValue(newAlignment, TextAlignment)) {
+                    if (!check.isEnumValue(newAlignment, TextAlignment)) {
                         return;
                     }
 

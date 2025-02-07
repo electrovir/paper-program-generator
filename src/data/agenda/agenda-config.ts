@@ -1,5 +1,5 @@
 import {defineShape, enumShape} from 'object-shape-tester';
-import {agendaSectionShape} from './agenda-section';
+import {agendaSectionShape} from './agenda-section.js';
 
 export enum PaperFill {
     HalfSheet = 'half-sheet',
@@ -21,7 +21,7 @@ export const agendaPageShape = defineShape({
     sections: [agendaSectionShape],
 });
 
-export type AgendaPage = typeof agendaPageShape.runTimeType;
+export type AgendaPage = typeof agendaPageShape.runtimeType;
 
 export const agendaConfigShape = defineShape({
     pages: [agendaPageShape],
@@ -30,7 +30,7 @@ export const agendaConfigShape = defineShape({
     duplicateForPrinting: false,
 });
 
-export type AgendaConfig = typeof agendaConfigShape.runTimeType;
+export type AgendaConfig = typeof agendaConfigShape.runtimeType;
 
 export const agendaTemplateShape = defineShape({
     id: 'random string',
@@ -38,4 +38,4 @@ export const agendaTemplateShape = defineShape({
     config: agendaConfigShape,
 });
 
-export type AgendaTemplate = typeof agendaTemplateShape.runTimeType;
+export type AgendaTemplate = typeof agendaTemplateShape.runtimeType;

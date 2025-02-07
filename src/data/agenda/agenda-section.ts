@@ -1,9 +1,9 @@
 import {ShapeDefinition, defineShape, or} from 'object-shape-tester';
-import {chronologySectionShape} from './agenda-sections/chronology.section';
-import {headingSectionShape} from './agenda-sections/heading.section';
-import {photosSectionShape} from './agenda-sections/photos.section';
-import {tableSectionShape} from './agenda-sections/table.section';
-import {textSectionShape} from './agenda-sections/text.section';
+import {chronologySectionShape} from './agenda-sections/chronology.section.js';
+import {headingSectionShape} from './agenda-sections/heading.section.js';
+import {photosSectionShape} from './agenda-sections/photos.section.js';
+import {tableSectionShape} from './agenda-sections/table.section.js';
+import {textSectionShape} from './agenda-sections/text.section.js';
 
 const possibleSections = [
     chronologySectionShape,
@@ -15,7 +15,7 @@ const possibleSections = [
 
 export const agendaSectionShape = defineShape(or(...possibleSections));
 
-export type AgendaSection = typeof agendaSectionShape.runTimeType;
+export type AgendaSection = typeof agendaSectionShape.runtimeType;
 
 export type AgendaSectionType = AgendaSection['sectionType'];
 
